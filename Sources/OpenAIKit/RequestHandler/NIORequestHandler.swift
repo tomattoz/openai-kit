@@ -75,6 +75,13 @@ struct NIORequestHandler: RequestHandler {
         
         let response = try await httpClient.execute(httpClientRequest, timeout: .seconds(25))
         
+        if response.status.code < 200 || response.status.code >= 300 {
+            let buffer = try await response.body.collect(upTo: .max)
+            let error = try JSONDecoder().decode(APIErrorResponse.self, from: buffer)
+            
+            throw error
+        }
+        
         return AsyncThrowingStream<T, Error> { continuation in
             Task(priority: .userInitiated) {
                 do {
@@ -97,5 +104,4 @@ struct NIORequestHandler: RequestHandler {
             }
         }
     }
-
 }
