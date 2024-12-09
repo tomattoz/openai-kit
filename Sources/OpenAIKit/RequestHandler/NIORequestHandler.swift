@@ -77,9 +77,26 @@ struct NIORequestHandler: RequestHandler {
         
         if response.status.code < 200 || response.status.code >= 300 {
             let buffer = try await response.body.collect(upTo: .max)
-            let error = try JSONDecoder().decode(APIErrorResponse.self, from: buffer)
+            var error: APIError?
             
-            throw error
+            if error == nil {
+                do {
+                    error = try JSONDecoder().decode(WebAPIErrorResponse.self, from: buffer).detail
+                } catch {}
+            }
+            
+            if error == nil {
+                do {
+                    error = try JSONDecoder().decode(APIErrorResponse.self, from: buffer).error
+                } catch {}
+            }
+            
+            if let error {
+                throw error
+            }
+            else {
+                throw RequestHandlerError.errorParsingFailed(.init(buffer: buffer))
+            }
         }
         
         return AsyncThrowingStream<T, Error> { continuation in
