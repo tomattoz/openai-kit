@@ -95,13 +95,13 @@ let completion = try await openAIClient.completions.create(
 
 
 ## Error handling
-If the request to the API failed for any reason an `OpenAIKit.APIErrorResponse` is `thrown`.
+If the request to the API failed for any reason an `OpenAIKit.APIError` is `thrown`.
 Simply ensure you catch errors thrown like any other throwing function
 
 ~~~~swift
 do {
    ...
-} catch let error as APIErrorResponse {
+} catch let error as APIError {
     print(error)
 }
 ~~~~

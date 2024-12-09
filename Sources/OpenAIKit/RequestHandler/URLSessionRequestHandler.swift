@@ -24,7 +24,7 @@ struct URLSessionRequestHandler: RequestHandler {
         do {
             return try decoder.decode(T.self, from: data)
         } catch {
-            throw try decoder.decode(APIErrorResponse.self, from: data)
+            throw try decoder.decodeAPIError(data)
         }
     }
     
