@@ -1,4 +1,4 @@
-public struct ChatProvider {
+public struct ChatProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

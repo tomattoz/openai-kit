@@ -1,4 +1,4 @@
-public struct EditProvider {
+public struct EditProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

@@ -1,4 +1,4 @@
-public struct ModerationProvider {
+public struct ModerationProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

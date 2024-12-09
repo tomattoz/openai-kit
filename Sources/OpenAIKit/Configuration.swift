@@ -1,6 +1,6 @@
 import NIOHTTP1
 
-public struct Configuration {
+public struct Configuration: Sendable {
     public let apiKey: String
     public let organization: String?
     public let api: API?

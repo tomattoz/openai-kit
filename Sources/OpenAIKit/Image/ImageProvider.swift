@@ -1,6 +1,6 @@
 import Foundation
 
-public struct ImageProvider {
+public struct ImageProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

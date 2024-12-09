@@ -3,7 +3,7 @@ import NIO
 import NIOHTTP1
 import Foundation
 
-public struct Client {
+public struct Client: Sendable {
     
     public let audio: AudioProvider
     public let chats: ChatProvider

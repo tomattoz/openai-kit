@@ -1,4 +1,4 @@
-public struct ModelProvider {
+public struct ModelProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

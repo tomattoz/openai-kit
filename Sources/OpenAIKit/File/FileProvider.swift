@@ -1,6 +1,6 @@
 import Foundation
 
-public struct FileProvider {
+public struct FileProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

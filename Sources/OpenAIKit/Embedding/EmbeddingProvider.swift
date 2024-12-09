@@ -1,4 +1,4 @@
-public struct EmbeddingProvider {
+public struct EmbeddingProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

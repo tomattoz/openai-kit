@@ -1,6 +1,6 @@
 import Foundation
 
-public enum FinishReason: String {
+public enum FinishReason: String, Sendable {
     /// API returned complete model output
     case stop
     

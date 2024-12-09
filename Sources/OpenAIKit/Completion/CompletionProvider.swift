@@ -1,4 +1,4 @@
-public struct CompletionProvider {
+public struct CompletionProvider: Sendable {
     
     private let requestHandler: RequestHandler
     

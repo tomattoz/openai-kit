@@ -15,4 +15,8 @@ struct WebAPIErrorResponse: Error, Codable {
     public let detail: APIError
 }
 
-
+extension APIError: CustomStringConvertible {
+    public var description: String {
+        message
+    }
+}

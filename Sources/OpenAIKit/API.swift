@@ -1,6 +1,6 @@
 import Foundation
 
-public struct API {
+public struct API: Sendable {
     public let scheme: Scheme
     public let host: String
     public let path: String?
@@ -17,7 +17,7 @@ public struct API {
 }
 
 extension API {
-    public enum Scheme {
+    public enum Scheme: Sendable {
         case http
         case https
         case custom(String)
