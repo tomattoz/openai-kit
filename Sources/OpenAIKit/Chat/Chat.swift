@@ -10,6 +10,8 @@ public struct Chat {
     public let model: String
     public let choices: [Choice]
     public let usage: Usage
+    public let conversationId: String?
+    public let messageId: String?
 }
 
 extension Chat: Codable {}

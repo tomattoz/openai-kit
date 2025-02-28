@@ -25,7 +25,9 @@ public struct ChatProvider: Sendable {
         presencePenalty: Double = 0.0,
         frequencyPenalty: Double = 0.0,
         logitBias: [String : Int] = [:],
-        user: String? = nil
+        user: String? = nil,
+        parentMessageID: String? = nil,
+        conversationID: String? = nil
     ) async throws -> Chat {
         
         let request = try CreateChatRequest(
@@ -40,7 +42,9 @@ public struct ChatProvider: Sendable {
             presencePenalty: presencePenalty,
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
-            user: user
+            user: user,
+            parentMessageID: parentMessageID,
+            conversationID: conversationID
         )
     
         return try await requestHandler.perform(request: request)
@@ -71,7 +75,9 @@ public struct ChatProvider: Sendable {
         presencePenalty: Double = 0.0,
         frequencyPenalty: Double = 0.0,
         logitBias: [String : Int] = [:],
-        user: String? = nil
+        user: String? = nil,
+        parentMessageID: String? = nil,
+        conversationID: String? = nil
     ) async throws -> AsyncThrowingStream<ChatStream, Error> {
         
         let request = try CreateChatRequest(
@@ -86,7 +92,9 @@ public struct ChatProvider: Sendable {
             presencePenalty: presencePenalty,
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
-            user: user
+            user: user,
+            parentMessageID: parentMessageID,
+            conversationID: conversationID
         )
     
         return try await requestHandler.stream(request: request)

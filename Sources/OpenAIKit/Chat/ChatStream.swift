@@ -6,6 +6,8 @@ public struct ChatStream: Sendable {
     public let created: Date
     public let model: String
     public let choices: [ChatStream.Choice]
+    public let conversationId: String?
+    public let messageId: String?
 }
 
 extension ChatStream: Codable {}

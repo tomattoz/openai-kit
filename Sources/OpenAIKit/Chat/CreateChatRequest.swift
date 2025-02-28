@@ -19,7 +19,9 @@ struct CreateChatRequest: Request {
         presencePenalty: Double,
         frequencyPenalty: Double,
         logitBias: [String: Int],
-        user: String?
+        user: String?,
+        parentMessageID: String?,
+        conversationID: String?
     ) throws {
         
         let body = Body(
@@ -34,7 +36,9 @@ struct CreateChatRequest: Request {
             presencePenalty: presencePenalty,
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
-            user: user
+            user: user,
+            parentMessageID: parentMessageID,
+            conversationID: conversationID
         )
                 
         self.body = try Self.encoder.encode(body)
@@ -55,8 +59,10 @@ extension CreateChatRequest {
         let frequencyPenalty: Double
         let logitBias: [String: Int]
         let user: String?
-            
-        enum CodingKeys: CodingKey {
+        let parentMessageID: String?
+        let conversationID: String?
+
+        enum CodingKeys: String, CodingKey {
             case model
             case messages
             case temperature
@@ -69,6 +75,8 @@ extension CreateChatRequest {
             case frequencyPenalty
             case logitBias
             case user
+            case parentMessageID
+            case conversationID
         }
         
         func encode(to encoder: Encoder) throws {
@@ -100,6 +108,8 @@ extension CreateChatRequest {
             }
             
             try container.encodeIfPresent(user, forKey: .user)
+            try container.encodeIfPresent(parentMessageID, forKey: .parentMessageID)
+            try container.encodeIfPresent(conversationID, forKey: .conversationID)
         }
     }
 }
