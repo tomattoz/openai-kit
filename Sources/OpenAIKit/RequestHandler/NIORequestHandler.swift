@@ -73,7 +73,7 @@ struct NIORequestHandler: RequestHandler {
         decoder.keyDecodingStrategy = request.keyDecodingStrategy
         decoder.dateDecodingStrategy = request.dateDecodingStrategy
         
-        let response = try await httpClient.execute(httpClientRequest, timeout: .seconds(25))
+        let response = try await httpClient.execute(httpClientRequest, timeout: .seconds(60))
         
         if response.status.code < 200 || response.status.code >= 300 {
             let buffer = try await response.body.collect(upTo: .max)
