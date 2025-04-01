@@ -83,13 +83,25 @@ struct NIORequestHandler: RequestHandler {
         return AsyncThrowingStream<T, Error> { continuation in
             Task(priority: .userInitiated) {
                 do {
+                    var previous = ""
+                    
                     for try await buffer in response.body {
                         String(buffer: buffer)
                             .components(separatedBy: "data: ")
                             .filter { $0 != "data: " }
                             .compactMap {
-                                guard let data = $0.data(using: .utf8) else { return nil }
-                                return try? decoder.decode(T.self, from: data)
+                                let string = previous + $0
+                                guard let data = string.data(using: .utf8) else { return nil }
+                                
+                                do {
+                                    let result = try decoder.decode(T.self, from: data)
+                                    previous = ""
+                                    return result
+                                }
+                                catch {
+                                    previous = $0
+                                    return nil
+                                }
                             }
                             .forEach { value in
                                 continuation.yield(value)
