@@ -10,6 +10,7 @@ public struct Chat {
     public let model: String
     public let choices: [Choice]
     public let usage: Usage
+    public let responseFormat: ResponseFormat?
     public let conversationId: String?
     public let messageId: String?
 }
@@ -85,6 +86,83 @@ extension Chat.Message {
             case .system: self = .system(content: newValue)
             case .user: self = .user(content: newValue)
             case .assistant: self = .assistant(content: newValue)
+            }
+        }
+    }
+}
+
+extension Chat {
+    public enum ResponseFormat: Codable, Sendable {
+
+        /// Enables JSON mode, which ensures the message the model generates is valid JSON. Note, if you want to
+        /// supply your own schema use `jsonSchema` instead.
+        ///
+        /// Important: when using JSON mode, you must also instruct the model to produce JSON yourself via a
+        /// system or user message. Without this, the model may generate an unending stream of whitespace until
+        /// the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.
+        /// Also note that the message content may be partially cut off if finish_reason="length", which indicates
+        /// the generation exceeded max_tokens or the conversation exceeded the max context length.
+        case jsonObject
+
+        /// Enables Structured Outputs which ensures the model will match your supplied JSON schema.
+        /// Learn more in the Structured Outputs guide: https://platform.openai.com/docs/guides/structured-outputs
+        ///
+        /// - Parameters:
+        ///   - name: The name of the response format. Must be a-z, A-Z, 0-9, or contain underscores and dashes,
+        ///           with a maximum length of 64.
+        ///
+        ///   - description: A description of what the response format is for, used by the model to determine how
+        ///                  to respond in the format.
+        ///
+        ///   - schema: The schema for the response format, described as a JSON Schema object.
+        ///
+        ///   - strict: Whether to enable strict schema adherence when generating the output. If set to true, the
+        ///             model will always follow the exact schema defined in the schema field. Only a subset of JSON Schema
+        ///             is supported when strict is true. To learn more, read the Structured Outputs guide.
+        case jsonSchema(
+            name: String,
+            description: String? = nil,
+            schema: [String: AIProxyJSONValue]? = nil,
+            strict: Bool? = nil
+        )
+
+        /// Instructs the model to produce text only.
+        case text
+
+        private enum RootKey: String, CodingKey {
+            case type
+            case jsonSchema = "json_schema"
+        }
+
+        private enum SchemaKey: String, CodingKey {
+            case description
+            case name
+            case schema
+            case strict
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: RootKey.self)
+            switch self {
+            case .jsonObject:
+                try container.encode("json_object", forKey: .type)
+            case .jsonSchema(
+                name: let name,
+                description: let description,
+                schema: let schema,
+                strict: let strict
+            ):
+                try container.encode("json_schema", forKey: .type)
+                var nestedContainer = container.nestedContainer(
+                    keyedBy: SchemaKey.self,
+                    forKey: .jsonSchema
+                )
+                try nestedContainer.encode(name, forKey: .name)
+                try nestedContainer.encodeIfPresent(description, forKey: .description)
+                try nestedContainer.encodeIfPresent(schema, forKey: .schema)
+                try nestedContainer.encodeIfPresent(strict, forKey: .strict)
+            case .text:
+                try container.encode("text", forKey: .type)
             }
         }
     }

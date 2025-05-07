@@ -20,6 +20,7 @@ struct CreateChatRequest: Request {
         frequencyPenalty: Double,
         logitBias: [String: Int],
         user: String?,
+        responseFormat: Chat.ResponseFormat?,
         parentMessageID: String?,
         conversationID: String?
     ) throws {
@@ -37,6 +38,7 @@ struct CreateChatRequest: Request {
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
             user: user,
+            responseFormat: responseFormat,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
@@ -59,6 +61,7 @@ extension CreateChatRequest {
         let frequencyPenalty: Double
         let logitBias: [String: Int]
         let user: String?
+        let responseFormat: Chat.ResponseFormat?
         let parentMessageID: String?
         let conversationID: String?
 
@@ -75,6 +78,7 @@ extension CreateChatRequest {
             case frequencyPenalty
             case logitBias
             case user
+            case responseFormat
             case parentMessageID
             case conversationID
         }
@@ -108,6 +112,7 @@ extension CreateChatRequest {
             }
             
             try container.encodeIfPresent(user, forKey: .user)
+            try container.encodeIfPresent(responseFormat, forKey: .responseFormat)
             try container.encodeIfPresent(parentMessageID, forKey: .parentMessageID)
             try container.encodeIfPresent(conversationID, forKey: .conversationID)
         }

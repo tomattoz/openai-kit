@@ -26,6 +26,7 @@ public struct ChatProvider: Sendable {
         frequencyPenalty: Double = 0.0,
         logitBias: [String : Int] = [:],
         user: String? = nil,
+        responseFormat: Chat.ResponseFormat? = nil,
         parentMessageID: String? = nil,
         conversationID: String? = nil
     ) async throws -> Chat {
@@ -43,6 +44,7 @@ public struct ChatProvider: Sendable {
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
             user: user,
+            responseFormat: responseFormat,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
@@ -76,6 +78,7 @@ public struct ChatProvider: Sendable {
         frequencyPenalty: Double = 0.0,
         logitBias: [String : Int] = [:],
         user: String? = nil,
+        responseFormat: Chat.ResponseFormat? = nil,
         parentMessageID: String? = nil,
         conversationID: String? = nil
     ) async throws -> AsyncThrowingStream<ChatStream, Error> {
@@ -93,6 +96,7 @@ public struct ChatProvider: Sendable {
             frequencyPenalty: frequencyPenalty,
             logitBias: logitBias,
             user: user,
+            responseFormat: responseFormat,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
