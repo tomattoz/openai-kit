@@ -17,14 +17,14 @@ public struct ChatProvider: Sendable {
     public func create(
         model: ModelID,
         messages: [Chat.Message] = [],
-        temperature: Double = 1.0,
-        topP: Double = 1.0,
-        n: Int = 1,
-        stops: [String] = [],
+        temperature: Double? = nil, // default 1.0
+        topP: Double? = nil, // default 1.0
+        n: Int? = nil, // default 1
+        stops: [String]? = nil, // default []
         maxTokens: Int? = nil,
-        presencePenalty: Double = 0.0,
-        frequencyPenalty: Double = 0.0,
-        logitBias: [String : Int] = [:],
+        presencePenalty: Double? = nil, // default 0.0
+        frequencyPenalty: Double? = nil, // dafault 0.0
+        logitBias: [String : Int]? = nil, // default [:]
         user: String? = nil,
         responseFormat: Chat.ResponseFormat? = nil,
         webSearchOptions: Chat.WebSearchOptions? = nil,
@@ -71,14 +71,14 @@ public struct ChatProvider: Sendable {
     public func stream(
         model: ModelID,
         messages: [Chat.Message] = [],
-        temperature: Double = 1.0,
-        topP: Double = 1.0,
-        n: Int = 1,
-        stops: [String] = [],
+        temperature: Double? = nil, // default 1.0
+        topP: Double? = nil, // default 1.0
+        n: Int? = nil, // default 1
+        stops: [String]? = nil, // default []
         maxTokens: Int? = nil,
-        presencePenalty: Double = 0.0,
-        frequencyPenalty: Double = 0.0,
-        logitBias: [String : Int] = [:],
+        presencePenalty: Double? = nil, // default 0.0
+        frequencyPenalty: Double? = nil, // dafault 0.0
+        logitBias: [String : Int]? = nil, // default [:]
         user: String? = nil,
         responseFormat: Chat.ResponseFormat? = nil,
         webSearchOptions: Chat.WebSearchOptions? = nil,

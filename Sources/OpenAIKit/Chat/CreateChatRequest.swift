@@ -10,15 +10,15 @@ struct CreateChatRequest: Request {
     init(
         model: String,
         messages: [Chat.Message],
-        temperature: Double,
-        topP: Double,
-        n: Int,
-        stream: Bool,
-        stops: [String],
+        temperature: Double?,
+        topP: Double?,
+        n: Int?,
+        stream: Bool?,
+        stops: [String]?,
         maxTokens: Int?,
-        presencePenalty: Double,
-        frequencyPenalty: Double,
-        logitBias: [String: Int],
+        presencePenalty: Double?,
+        frequencyPenalty: Double?,
+        logitBias: [String: Int]?,
         user: String?,
         responseFormat: Chat.ResponseFormat?,
         webSearchOptions: Chat.WebSearchOptions? = nil,
@@ -53,15 +53,15 @@ extension CreateChatRequest {
     struct Body: Encodable {
         let model: String
         let messages: [Chat.Message]
-        let temperature: Double
-        let topP: Double
-        let n: Int
-        let stream: Bool
-        let stops: [String]
+        let temperature: Double?
+        let topP: Double?
+        let n: Int?
+        let stream: Bool?
+        let stops: [String]?
         let maxTokens: Int?
-        let presencePenalty: Double
-        let frequencyPenalty: Double
-        let logitBias: [String: Int]
+        let presencePenalty: Double?
+        let frequencyPenalty: Double?
+        let logitBias: [String: Int]?
         let user: String?
         let responseFormat: Chat.ResponseFormat?
         let webSearchOptions: Chat.WebSearchOptions?
@@ -91,35 +91,30 @@ extension CreateChatRequest {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(model, forKey: .model)
             
-            if !messages.isEmpty {
-                try container.encode(messages, forKey: .messages)
-            }
-
-            try container.encode(temperature, forKey: .temperature)
-            try container.encode(topP, forKey: .topP)
-            try container.encode(n, forKey: .n)
-            try container.encode(stream, forKey: .stream)
-            
-            if !stops.isEmpty {
-                try container.encode(stops, forKey: .stop)
-            }
-            
-            if let maxTokens {
-                try container.encode(maxTokens, forKey: .maxTokens)
-            }
-            
-            try container.encode(presencePenalty, forKey: .presencePenalty)
-            try container.encode(frequencyPenalty, forKey: .frequencyPenalty)
-            
-            if !logitBias.isEmpty {
-                try container.encode(logitBias, forKey: .logitBias)
-            }
-            
+            try container.encodeIfPresent(temperature, forKey: .temperature)
+            try container.encodeIfPresent(topP, forKey: .topP)
+            try container.encodeIfPresent(n, forKey: .n)
+            try container.encodeIfPresent(stream, forKey: .stream)
+            try container.encodeIfPresent(maxTokens, forKey: .maxTokens)
+            try container.encodeIfPresent(presencePenalty, forKey: .presencePenalty)
+            try container.encodeIfPresent(frequencyPenalty, forKey: .frequencyPenalty)
             try container.encodeIfPresent(user, forKey: .user)
             try container.encodeIfPresent(responseFormat, forKey: .responseFormat)
             try container.encodeIfPresent(webSearchOptions, forKey: .webSearchOptions)
             try container.encodeIfPresent(parentMessageID, forKey: .parentMessageID)
             try container.encodeIfPresent(conversationID, forKey: .conversationID)
+            
+            if !messages.isEmpty {
+                try container.encode(messages, forKey: .messages)
+            }
+
+            if let stops, !stops.isEmpty {
+                try container.encodeIfPresent(stops, forKey: .stop)
+            }
+
+            if let logitBias, !logitBias.isEmpty {
+                try container.encode(logitBias, forKey: .logitBias)
+            }
         }
     }
 }
