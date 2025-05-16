@@ -11,6 +11,7 @@ public struct Chat {
     public let choices: [Choice]
     public let usage: Usage
     public let responseFormat: ResponseFormat?
+    public let webSearchOptions: WebSearchOptions?
     public let conversationId: String?
     public let messageId: String?
 }
@@ -166,4 +167,63 @@ extension Chat {
             }
         }
     }
+}
+
+extension Chat {
+    public struct WebSearchOptions: Codable, Sendable {
+        
+        public enum SearchContextSize: String, Codable, Sendable {
+            case low
+            case medium
+            case high
+        }
+        
+        public struct UserLocation: Codable, Sendable {
+            
+            public struct Approximate: Codable, Sendable {
+                let city: String?
+                let country: String?
+                let region: String?
+                let timezone: String?
+                let type: String?
+                
+                public init(
+                    city: String? = nil,
+                    country: String? = nil,
+                    region: String? = nil,
+                    timezone: String? = nil,
+                    type: String? = "approximate"
+                ) {
+                    self.city = city
+                    self.country = country
+                    self.region = region
+                    self.timezone = timezone
+                    self.type = type
+                }
+            }
+            
+            let approximate: Approximate
+            
+            public init(approximate: Approximate) {
+                self.approximate = approximate
+            }
+        }
+        
+        let searchContextSize: SearchContextSize?
+        let userLocation: UserLocation?
+        
+        private enum CodingKeys: String, CodingKey {
+            case searchContextSize = "search_context_size"
+            case userLocation = "user_location"
+        }
+        
+        public init(
+            searchContextSize: SearchContextSize?,
+            userLocation: UserLocation?
+        ) {
+            self.searchContextSize = searchContextSize
+            self.userLocation = userLocation
+        }
+    }
+
 }

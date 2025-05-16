@@ -21,6 +21,7 @@ struct CreateChatRequest: Request {
         logitBias: [String: Int],
         user: String?,
         responseFormat: Chat.ResponseFormat?,
+        webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String?,
         conversationID: String?
     ) throws {
@@ -39,6 +40,7 @@ struct CreateChatRequest: Request {
             logitBias: logitBias,
             user: user,
             responseFormat: responseFormat,
+            webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
@@ -62,6 +64,7 @@ extension CreateChatRequest {
         let logitBias: [String: Int]
         let user: String?
         let responseFormat: Chat.ResponseFormat?
+        let webSearchOptions: Chat.WebSearchOptions?
         let parentMessageID: String?
         let conversationID: String?
 
@@ -79,6 +82,7 @@ extension CreateChatRequest {
             case logitBias
             case user
             case responseFormat
+            case webSearchOptions
             case parentMessageID
             case conversationID
         }
@@ -113,6 +117,7 @@ extension CreateChatRequest {
             
             try container.encodeIfPresent(user, forKey: .user)
             try container.encodeIfPresent(responseFormat, forKey: .responseFormat)
+            try container.encodeIfPresent(webSearchOptions, forKey: .webSearchOptions)
             try container.encodeIfPresent(parentMessageID, forKey: .parentMessageID)
             try container.encodeIfPresent(conversationID, forKey: .conversationID)
         }

@@ -7,6 +7,7 @@ public struct ChatStream: Sendable {
     public let model: String
     public let choices: [ChatStream.Choice]
     public let responseFormat: Chat.ResponseFormat?
+    public let webSearchOptions: Chat.WebSearchOptions?
     public let conversationId: String?
     public let messageId: String?
 }
@@ -31,5 +32,4 @@ extension ChatStream.Choice {
 }
 
 extension ChatStream.Choice.Message: Codable {}
-
 

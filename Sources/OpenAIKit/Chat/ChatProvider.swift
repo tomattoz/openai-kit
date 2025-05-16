@@ -27,6 +27,7 @@ public struct ChatProvider: Sendable {
         logitBias: [String : Int] = [:],
         user: String? = nil,
         responseFormat: Chat.ResponseFormat? = nil,
+        webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String? = nil,
         conversationID: String? = nil
     ) async throws -> Chat {
@@ -45,6 +46,7 @@ public struct ChatProvider: Sendable {
             logitBias: logitBias,
             user: user,
             responseFormat: responseFormat,
+            webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
@@ -79,6 +81,7 @@ public struct ChatProvider: Sendable {
         logitBias: [String : Int] = [:],
         user: String? = nil,
         responseFormat: Chat.ResponseFormat? = nil,
+        webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String? = nil,
         conversationID: String? = nil
     ) async throws -> AsyncThrowingStream<ChatStream, Error> {
@@ -97,6 +100,7 @@ public struct ChatProvider: Sendable {
             logitBias: logitBias,
             user: user,
             responseFormat: responseFormat,
+            webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
             conversationID: conversationID
         )
