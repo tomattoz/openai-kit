@@ -23,7 +23,9 @@ struct CreateChatRequest: Request {
         responseFormat: Chat.ResponseFormat?,
         webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String?,
-        conversationID: String?
+        conversationID: String?,
+        promptCacheRetention: String?,
+        promptCacheKey: String?
     ) throws {
         
         let body = Body(
@@ -42,7 +44,9 @@ struct CreateChatRequest: Request {
             responseFormat: responseFormat,
             webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
-            conversationID: conversationID
+            conversationID: conversationID,
+            promptCacheRetention: promptCacheRetention,
+            promptCacheKey: promptCacheKey
         )
                 
         self.body = try Self.encoder.encode(body)
@@ -57,6 +61,7 @@ extension CreateChatRequest {
         let topP: Double?
         let n: Int?
         let stream: Bool?
+        let streamOptions = ["include_usage": true]
         let stops: [String]?
         let maxTokens: Int?
         let presencePenalty: Double?
@@ -67,6 +72,8 @@ extension CreateChatRequest {
         let webSearchOptions: Chat.WebSearchOptions?
         let parentMessageID: String?
         let conversationID: String?
+        let promptCacheRetention: String?
+        let promptCacheKey: String?
 
         enum CodingKeys: String, CodingKey {
             case model
@@ -75,6 +82,7 @@ extension CreateChatRequest {
             case topP
             case n
             case stream
+            case streamOptions
             case stop
             case maxTokens
             case presencePenalty
@@ -85,6 +93,8 @@ extension CreateChatRequest {
             case webSearchOptions
             case parentMessageID
             case conversationID
+            case promptCacheRetention
+            case promptCacheKey
         }
         
         func encode(to encoder: Encoder) throws {
@@ -95,6 +105,9 @@ extension CreateChatRequest {
             try container.encodeIfPresent(topP, forKey: .topP)
             try container.encodeIfPresent(n, forKey: .n)
             try container.encodeIfPresent(stream, forKey: .stream)
+            if stream == true {
+                try container.encodeIfPresent(streamOptions, forKey: .streamOptions)
+            }
             try container.encodeIfPresent(maxTokens, forKey: .maxTokens)
             try container.encodeIfPresent(presencePenalty, forKey: .presencePenalty)
             try container.encodeIfPresent(frequencyPenalty, forKey: .frequencyPenalty)
@@ -102,8 +115,9 @@ extension CreateChatRequest {
             try container.encodeIfPresent(responseFormat, forKey: .responseFormat)
             try container.encodeIfPresent(webSearchOptions, forKey: .webSearchOptions)
             try container.encodeIfPresent(parentMessageID, forKey: .parentMessageID)
-            try container.encodeIfPresent(conversationID, forKey: .conversationID)
-            
+            try container.encodeIfPresent(promptCacheRetention, forKey: .promptCacheRetention)
+            try container.encodeIfPresent(promptCacheKey, forKey: .promptCacheKey)
+
             if !messages.isEmpty {
                 try container.encode(messages, forKey: .messages)
             }

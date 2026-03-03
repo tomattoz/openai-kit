@@ -34,6 +34,7 @@ extension JSONEncoder {
     static var requestEncoder: JSONEncoder {
         let encoder = JSONEncoder()
         encoder.keyEncodingStrategy = .convertToSnakeCase
+        encoder.outputFormatting = .sortedKeys
         return encoder
     }
 }

@@ -29,7 +29,9 @@ public struct ChatProvider: Sendable {
         responseFormat: Chat.ResponseFormat? = nil,
         webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String? = nil,
-        conversationID: String? = nil
+        conversationID: String? = nil,
+        promptCacheRetention: String? = nil,
+        promptCacheKey: String? = nil
     ) async throws -> Chat {
         
         let request = try CreateChatRequest(
@@ -48,7 +50,9 @@ public struct ChatProvider: Sendable {
             responseFormat: responseFormat,
             webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
-            conversationID: conversationID
+            conversationID: conversationID,
+            promptCacheRetention: promptCacheRetention,
+            promptCacheKey: promptCacheKey
         )
     
         return try await requestHandler.perform(request: request)
@@ -83,7 +87,9 @@ public struct ChatProvider: Sendable {
         responseFormat: Chat.ResponseFormat? = nil,
         webSearchOptions: Chat.WebSearchOptions? = nil,
         parentMessageID: String? = nil,
-        conversationID: String? = nil
+        conversationID: String? = nil,
+        promptCacheRetention: String? = nil,
+        promptCacheKey: String? = nil
     ) async throws -> AsyncThrowingStream<ChatStream, Error> {
         
         let request = try CreateChatRequest(
@@ -102,7 +108,9 @@ public struct ChatProvider: Sendable {
             responseFormat: responseFormat,
             webSearchOptions: webSearchOptions,
             parentMessageID: parentMessageID,
-            conversationID: conversationID
+            conversationID: conversationID,
+            promptCacheRetention: promptCacheRetention,
+            promptCacheKey: promptCacheKey
         )
     
         return try await requestHandler.stream(request: request)
